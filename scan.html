@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scan & AI Feedback</title>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js"></script>
+  <script async src="https://docs.opencv.org/master/opencv.js" onload="opencvReady()"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    video {
+      width: 80%;
+      max-width: 600px;
+      border: 2px solid #4F46E5;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+    canvas {
+      display: none;
+    }
+    .feedback, .ai-feedback {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #4F46E5;
+    }
+    .analysis {
+      margin-top: 20px;
+      padding: 15px;
+      border: 2px solid #4F46E5;
+      border-radius: 10px;
+      display: none;
+      text-align: left;
+      max-width: 600px;
+      margin: auto;
+      background: #f3f4f6;
+    }
+    .capture-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #4F46E5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .capture-btn:hover {
+      background-color: #4338ca;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Scan Your Paper & Get AI Feedback</h1>
+  <p>Hold your paper in front of the camera and click "Capture & Analyze" to scan.</p>
+  
+  <video id="video" autoplay></video>
+  <canvas id="canvas"></canvas>
+  
+  <button class="capture-btn" onclick="analyzeText()">Capture & Analyze</button>
+  
+  <p class="feedback" id="feedback">Waiting for document...</p>
+
+  <div class="analysis" id="analysis-box">
+    <h3>Extracted Text</h3>
+    <p id="extracted-text">Processing...</p>
+
+    <h3>AI Feedback</h3>
+    <div class="ai-feedback" id="ai-feedback">AI is analyzing...</div>
+  </div>
+
+  <script>
+    let opencvLoaded = false;
+
+    function opencvReady() {
+      console.log("OpenCV.js is ready!");
+      opencvLoaded = true;
+    }
+
+    async function startWebcam() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+        document.getElementById("video").srcObject = stream;
+        console.log("Webcam started successfully.");
+      } catch (err) {
+        alert("Error accessing the webcam: " + err.message);
+      }
+    }
+
+    function analyzeText() {
+      if (!opencvLoaded) {
+        alert("Error: OpenCV not loaded yet. Please wait a few seconds and try again.");
+        return;
+      }
+
+      console.log("Capture button clicked!");
+
+      const video = document.getElementById("video");
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      console.log("Image captured, starting preprocessing...");
+
+      preprocessImage(canvas);
+
+      document.getElementById("feedback").innerText = "Analyzing document...";
+
+      let imageDataUrl = canvas.toDataURL("image/png");
+
+      console.log("Image sent to OCR processing...");
+
+      Tesseract.recognize(imageDataUrl, "eng")
+        .then(({ data: { text } }) => {
+          console.log("OCR text output:", text);
+          document.getElementById("extracted-text").innerText = text || "No text detected.";
+          document.getElementById("analysis-box").style.display = "block";
+
+          let feedback = getAnalysisFeedback(text);
+          document.getElementById("feedback").innerText = feedback;
+
+          if (text.trim().length > 10) {
+            analyzeWithAI(text);
+          } else {
+            document.getElementById("ai-feedback").innerText = "Not enough text for analysis.";
+          }
+        })
+        .catch(err => {
+          console.error("OCR Error:", err);
+          document.getElementById("feedback").innerText = "Error processing text.";
+        });
+    }
+
+    function analyzeWithAI(text) {
+      document.getElementById("ai-feedback").innerText = "AI is analyzing your text...";
+
+      let apiKey = "YOUR_OPENAI_API_KEY"; // Replace with your API key
+
+      fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: "gpt-4",
+          messages: [{ role: "system", content: "You are an AI educator analyzing student text." },
+                     { role: "user", content: `Analyze the following text educationally. Give feedback on grammar, readability, and key points: ${text}` }]
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("AI Analysis Response:", data);
+        document.getElementById("ai-feedback").innerText = data.choices[0]?.message?.content || "AI feedback unavailable.";
+      })
+      .catch(err => {
+        console.error("AI Error:", err);
+        document.getElementById("ai-feedback").innerText = "Error analyzing text with AI.";
+      });
+    }
+
+    function preprocessImage(image) {
+      try {
+        let mat = cv.imread(image);
+        cv.cvtColor(mat, mat, cv.COLOR_RGBA2GRAY, 0);
+        cv.GaussianBlur(mat, mat, new cv.Size(3, 3), 0, 0);
+        cv.threshold(mat, mat, 100, 255, cv.THRESH_BINARY + cv.THRESH_OTSU);
+        cv.imshow(image, mat);
+        mat.delete();
+        console.log("Image preprocessing complete.");
+      } catch (error) {
+        console.error("OpenCV Preprocessing Error:", error);
+        document.getElementById("feedback").innerText = "Preprocessing failed.";
+      }
+    }
+
+    function getAnalysisFeedback(text) {
+      if (!text.trim()) return "No readable text found. Ensure good lighting and focus.";
+      if (text.length < 20) return "Try to hold the paper steady, more text needed.";
+      if (text.length > 300) return "Good scan! AI is analyzing the content.";
+      return "Text detected! AI is processing your document...";
+    }
+
+    window.onload = () => {
+      console.log("Page loaded, starting webcam...");
+      startWebcam();
+    };
+  </script>
+
+</body>
+</html>

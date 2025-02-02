@@ -4,42 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Presentation Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-900">
-    <div class="container mx-auto py-12 px-6">
-        <h1 class="text-4xl font-bold text-center text-indigo-600 mb-8">AI Presentation Generator</h1>
-        
-        <form id="presentation-form" class="bg-white p-6 rounded-xl shadow-md">
-            <label class="block font-bold text-gray-700 mb-2">Topic Title</label>
-            <input type="text" id="topic" class="w-full p-3 border rounded-lg mb-4" required>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 text-gray-900 font-[Poppins]">
+    <div class="container mx-auto py-12 px-6 max-w-3xl">
+        <!-- Title -->
+        <h1 class="text-5xl font-extrabold text-center text-indigo-700 drop-shadow-md mb-8">
+            AI Presentation Generator
+        </h1>
 
-            <label class="block font-bold text-gray-700 mb-2">Key Notes</label>
-            <textarea id="notes" class="w-full p-3 border rounded-lg mb-4 h-32" required></textarea>
+        <!-- Form Card -->
+        <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-200">
+            <form id="presentation-form">
+                <label class="block font-semibold text-gray-700 mb-2 text-lg">Topic Title</label>
+                <input type="text" id="topic" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none mb-4" placeholder="Enter your topic" required>
 
-            <label class="block font-bold text-gray-700 mb-2">Reading Level</label>
-            <select id="reading-level" class="w-full p-3 border rounded-lg mb-4">
-                <option value="Kindergarten">Kindergarten</option>
-                <option value="1st Grade">1st Grade</option>
-                <option value="2nd Grade">2nd Grade</option>
-                <option value="3rd Grade">3rd Grade</option>
-                <option value="4th Grade">4th Grade</option>
-                <option value="5th Grade">5th Grade</option>
-                <option value="6th Grade">6th Grade</option>
-                <option value="7th Grade">7th Grade</option>
-                <option value="8th Grade">8th Grade</option>
-                <option value="9th Grade">9th Grade</option>
-                <option value="10th Grade">10th Grade</option>
-                <option value="11th Grade">11th Grade</option>
-                <option value="12th Grade">12th Grade</option>
-            </select>
+                <label class="block font-semibold text-gray-700 mb-2 text-lg">Key Notes</label>
+                <textarea id="notes" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none mb-4 h-32" placeholder="Enter key points..." required></textarea>
 
-            <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg hover:bg-indigo-700 transition">Generate Presentation</button>
-        </form>
+                <label class="block font-semibold text-gray-700 mb-2 text-lg">Reading Level</label>
+                <select id="reading-level" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none mb-6 bg-white">
+                    <option value="Kindergarten">Kindergarten</option>
+                    <option value="1st Grade">1st Grade</option>
+                    <option value="2nd Grade">2nd Grade</option>
+                    <option value="3rd Grade">3rd Grade</option>
+                    <option value="4th Grade">4th Grade</option>
+                    <option value="5th Grade">5th Grade</option>
+                    <option value="6th Grade">6th Grade</option>
+                    <option value="7th Grade">7th Grade</option>
+                    <option value="8th Grade">8th Grade</option>
+                    <option value="9th Grade">9th Grade</option>
+                    <option value="10th Grade">10th Grade</option>
+                    <option value="11th Grade">11th Grade</option>
+                    <option value="12th Grade">12th Grade</option>
+                </select>
 
-        <div id="pdf-container" class="mt-8 hidden">
-            <h2 class="text-2xl font-bold mb-4">Generated PDF:</h2>
-            <iframe id="pdf-frame" class="w-full h-96 border rounded-lg"></iframe>
+                <button type="submit" class="w-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold py-3 rounded-lg hover:from-indigo-600 hover:to-purple-600 transition duration-200 shadow-lg">
+                    Generate Presentation
+                </button>
+            </form>
+        </div>
+
+        <!-- PDF Display Section -->
+        <div id="pdf-container" class="mt-10 hidden text-center">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Generated PDF:</h2>
+            <iframe id="pdf-frame" class="w-full h-96 border rounded-lg shadow-md"></iframe>
         </div>
     </div>
 

@@ -8,7 +8,9 @@ import os
 import requests
 import logging
 from datetime import datetime
-
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+import openai
 # Initialize FastAPI app
 app = FastAPI()
 
