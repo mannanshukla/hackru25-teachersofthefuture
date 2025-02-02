@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="./output.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .parallax {
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    .hero {
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      background-image: url('bg.jpg');
+      background-size: cover;
+      background-position: center;
+      filter: blur(5px) brightness(50%);
+      z-index: -1;
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+
+  <header class="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
+    <nav class="navbar-container py-4 flex justify-between items-center px-6">
+      <div class="text-2xl font-bold text-indigo-600">AI for Educators</div>
+      <div class="hidden md:flex space-x-8">
+        <a href="#home" class="text-gray-700 hover:text-indigo-600">Home</a>
+        <a href="#training" class="text-gray-700 hover:text-indigo-600">Teacher Training</a>
+        <a href="#solutions" class="text-gray-700 hover:text-indigo-600">AI Tools</a>
+        <a href="#about" class="text-gray-700 hover:text-indigo-600">About</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="hero h-screen flex items-center justify-center parallax">
+      <div class="text-center text-white">
+        <h1 class="text-5xl md:text-6xl font-bold mb-5">Empowering Teachers with AI</h1>
+        <p class="text-lg md:text-xl mb-7 max-w-2xl mx-auto">
+          Learn how to integrate AI into your classroom to enhance student learning, automate tasks, and personalize education.
+        </p>
+        <a href="#solutions" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-full hover:bg-indigo-700 transition duration-300">Explore AI Tools</a>
+      </div>
+    </section>
+
+    <section id="solutions" class="py-20 bg-gray-100">
+      <div class="container mx-auto px-6">
+        <h2 class="text-4xl font-semibold mb-12 text-center text-gray-900">AI-Powered Teaching Tools</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          <div class="bg-white p-8 rounded-xl shadow-lg">
+            <div class="text-indigo-500 mb-4">
+              <i class="fas fa-lightbulb text-6xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-4 text-gray-800">AI Lesson Planning</h3>
+            <p class="text-gray-600">Generate customized lesson plans tailored to student learning styles and curriculum standards.</p>
+          </div>
+          <div class="bg-white p-8 rounded-xl shadow-lg">
+            <div class="text-green-500 mb-4">
+              <i class="fas fa-clipboard-check text-6xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-4 text-gray-800">Automated Grading</h3>
+            <p class="text-gray-600">Save time by using AI to grade multiple-choice and short-answer questions instantly.</p>
+          </div>
+          <div class="bg-white p-8 rounded-xl shadow-lg">
+            <div class="text-blue-500 mb-4">
+              <i class="fas fa-users text-6xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-4 text-gray-800">Student Engagement</h3>
+            <p class="text-gray-600">Use AI-driven interactive tools to keep students engaged in lessons.</p>
+          </div>
+          <div class="bg-white p-8 rounded-xl shadow-lg">
+            <div class="text-yellow-500 mb-4">
+              <i class="fas fa-cogs text-6xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-4 text-gray-800">Adaptive Learning</h3>
+            <p class="text-gray-600">AI analyzes student progress to offer personalized learning paths.</p>
+          </div>
+          <div class="bg-white p-8 rounded-xl shadow-lg">
+            <div class="text-red-500 mb-4">
+              <i class="fas fa-shield-alt text-6xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-4 text-gray-800">AI-Powered Chatbots</h3>
+            <p class="text-gray-600">Answer student questions instantly using AI chat assistants.</p>
+          </div>
+          <div class="bg-white p-8 rounded-xl shadow-lg">
+            <div class="text-purple-500 mb-4">
+              <i class="fas fa-edit text-6xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-4 text-gray-800">AI-Powered Content Creation</h3>
+            <p class="text-gray-600">Generate engaging quizzes, worksheets, and presentations automatically using AI.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="py-20 bg-indigo-600 text-white">
+      <div class="container mx-auto px-6">
+        <div class="max-w-3xl mx-auto text-center">
+          <h2 class="text-4xl font-semibold mb-6">About AI for Educators</h2>
+          <p class="text-xl mb-8">
+            Our mission is to equip teachers with the latest AI technology to improve efficiency and student learning outcomes.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-indigo-800 text-white py-8 text-center">
+    <p>&copy; 2025 AI for Educators. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
